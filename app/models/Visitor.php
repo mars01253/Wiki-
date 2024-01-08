@@ -10,4 +10,16 @@ class Visitor extends User {
         $this->db->execute();
     }
     
+    public function findemail($email){
+        $this->db->query('SELECT user_email FROM users WHERE user_email = :email');
+        $this->db->bind(':email' , $email);
+        $this->db->execute();
+        $data = $this->db->single();
+        if($data){
+            return true ; 
+        }else{
+            return false ; 
+        }
+        
+    }
 }

@@ -41,7 +41,7 @@ inpname.addEventListener('input', e => {
         rname.innerText = 'Name is Valid';
         rname.style.color = 'green';
         rname.style.display = 'block';
-    }else if(inpname.value === ''){
+    } else if (inpname.value === '') {
         rname.innerText = '';
     } else {
         rname.innerText = 'Name is Invalid';
@@ -53,28 +53,44 @@ inpname.addEventListener('input', e => {
 
 inpemail.addEventListener('input', e => {
     const emailValue = inpemail.value;
+
+    if (emailValue === '') {
+        email.innerText = '';
+        return;
+    }
+
     if (validemail.test(emailValue)) {
-        email.innerText = 'email is Valid';
+        email.innerText = 'Email is Valid';
         email.style.color = 'green';
         email.style.display = 'block';
-    }else if(inpemail.value === ''){
-        email.innerText = '';}
+    } else {
+        email.innerText = 'Email is Invalid';
+        email.style.color = 'red';
+        email.style.display = 'block';
+        e.preventDefault();
+        return;
+    }
 
-    else if(emailValue==''||!validemail.test(emailValue)){
-            email.innerText = 'email is Invalid';
-            email.style.color = 'red';
-            email.style.display = 'block';
-            e.preventDefault(e);
+    var formData = new FormData();
+    formData.append('email', emailValue);
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'controllers/visitors/findEmail', true);
+    xhr.onload = function(){
+        if(xhr.readyState==4&&xhr.status==200){
+            console.log(xhr.responseText);
         }
+    }
+   
+    xhr.send(formData);
 });
 
-cinppass.addEventListener("input" , e=>{
-    if(inppass.value!=cinppass.value&&inppass.value!=''){
+cinppass.addEventListener("input", e => {
+    if (inppass.value != cinppass.value && inppass.value != '') {
         cpass.innerText = 'Password dont\'t match!';
         cpass.style.color = 'red';
         cpass.style.display = 'block';
         e.preventDefault(e);
-    }else if(inppass.value==cinppass.value&&inppass.value!=''){
+    } else if (inppass.value == cinppass.value && inppass.value != '') {
         cpass.innerText = 'Password match';
         cpass.style.color = 'green';
     }
@@ -82,8 +98,8 @@ cinppass.addEventListener("input" , e=>{
 let success = document.getElementById('success');
 let failed = document.getElementById('failed');
 
-let open = new URL(location.href).searchParams.get('t') ; 
-let close = new URL(location.href).searchParams.get('f') ; 
+let open = new URL(location.href).searchParams.get('t');
+let close = new URL(location.href).searchParams.get('f');
 console.log(open);
 if (open) {
     setTimeout(() => {
@@ -95,3 +111,25 @@ if (open) {
         failed.classList.remove('hidden');
     }, 3600);
 }
+
+// inpemail.addEventListener('input' , checkemail);
+
+// function checkemail(){
+//     let checkemail = document.getElementById('checkmail');
+//     let signupform = document.getElementById('signupform');
+//     let email = inpemail.value ;
+//     var formData = new FormData();
+//     formData.append('email' ,email );
+//     const xhr = new XMLHttpRequest();
+//     xhr.open('POST', 'localhost/Wiki-/app/controllers/visitors/findEmail', true);
+//     xhr.onload = function() {
+//         if (xhr.status == 200 && xhr.readyState == 4) {
+//             email.classList.add('hidden');
+//             checkemail.innerText = xhr.responseText ;
+//         }
+//     };
+//     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+//     xhr.send(new URLSearchParams(formData));
+
+
+// }
