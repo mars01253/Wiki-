@@ -13,4 +13,20 @@ class Pages extends Controller
         ];
         $this->view('pages/index', $data);
     }
+    // public function admin()
+    // {
+    //     $data = [
+    //         'title' => 'index',
+    //         'description' => ''
+    //     ];
+    //     $this->view('pages/admindash', $data);
+    // }
+    // public function author()
+    // {
+    //     $data = [
+    //         'title' => 'index',
+    //         'description' => ''
+    //     ];
+    //     $this->view('pages/authordash', $data);
+    // }
 }
