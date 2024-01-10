@@ -8,9 +8,9 @@ xhr.onload = function () {
         for (let i = 0; i < data.length; i++) {
             catdiv.innerHTML += `
             <div class="relative group bg-gray-900 py-5 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
-            <span><img src="${data[i][4]}"></span>
-            <h4 class="text-white text-2xl font-bold capitalize text-center">${data[i][1]}</h4>
-            <h4 class="catid  text-white text-2xl font-bold capitalize text-center">Added: ${data[i][2]}</h4>
+            <span><img class="img" src=""></span>
+            <h4 class="text-white text-2xl font-bold capitalize text-center namecate">${data[i][1]}</h4>
+            <h4 class="  text-white text-2xl font-bold capitalize text-center">Added: ${data[i][2]}</h4>
             <h4 class="catid hidden text-white text-2xl font-bold capitalize text-center">${data[i][0]}</h4>
             <div class="flex w-[80%] justify-between mt-5">
             <button class="deletecat"><svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 448 512"><path fill="#e3e3e3" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></button>
@@ -19,8 +19,8 @@ xhr.onload = function () {
             </div>
             `;
         }
-        Categorymethods(); 
-        crudcat(); 
+        Categorymethods();
+        crudcat();
     }
 };
 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -42,6 +42,7 @@ function Categorymethods() {
 
 
 const addtocat = document.getElementById('addtocat');
+const deletedcat = document.getElementById('deletedcat');
 addtocat.addEventListener('click', e => {
     let id = parseInt(document.getElementById('id').innerText);
     let catname = document.getElementById('catname').value;
@@ -62,14 +63,68 @@ addtocat.addEventListener('click', e => {
     xhr.send(new URLSearchParams(formData));
 
 });
-
-function crudcat(){
-
-    var deletecat= document.querySelectorAll('.deletecat');
+function crudcat() {
+    let cat_id = document.querySelectorAll(".catid");
+    let updatecat = document.querySelectorAll(".updatecat");
+    var deletecat = document.querySelectorAll('.deletecat');
+    let namecate = document.querySelectorAll('.namecate');
+    let img = document.querySelectorAll('.img');
     for (let i = 0; i < deletecat.length; i++) {
-         deletecat[i].addEventListener("click" , e=>{
-            
-         })
-        
+        deletecat[i].addEventListener("click", e => {
+            let id = cat_id[i].innerText;
+            var formData = new FormData();
+            formData.append('cat_id', id);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost/Wiki-/Users/removecat', true);
+            xhr.onload = function () {
+                if (xhr.status == 200 && xhr.readyState == 4) {
+                    deletedcat.classList.remove('hidden');
+                    setTimeout(function () {
+                        deletedcat.classList.add('hidden');
+                    }, 1500);
+                }
+            };
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send(new URLSearchParams(formData));
+        })
+
     }
+    for (let i = 0; i < updatecat.length; i++) {
+        updatecat[i].addEventListener('click', e => {
+            let editcategory = document.getElementById('editcategory');
+            let sendedit = document.getElementById('sendedit');
+            editcategory.classList.remove('hidden');
+            const id = cat_id[i].innerText;
+            let name = namecate[i].innerText;
+            let editcat = document.getElementById('editcat');
+            editcat.value = name;
+            document.getElementById('closecatedit').addEventListener('click', e => {
+                editcategory.classList.add('hidden');
+            })
+            sendedit.addEventListener('click', e => {
+                let sendname = editcat.value;
+                console.log(sendname);
+                var formData = new FormData();
+                formData.append('id', id);
+                formData.append('name', sendname);
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost/Wiki-/Users/updatecat', true);
+                xhr.onload = function () {
+                    if (xhr.status == 200 && xhr.readyState == 4) {
+                        editcategory.classList.add('hidden');
+                        setTimeout(function () {
+                            deletedcat.classList.add('hidden');
+                        }, 1500);
+                    }
+                };
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send(new URLSearchParams(formData));
+
+            })
+        })
+    }
+
 }
+
+
+

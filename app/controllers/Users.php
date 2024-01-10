@@ -1,6 +1,7 @@
 <?php
 
-class Users extends Controller{
+class Users extends Controller
+{
     private $userModel;
     public function __construct()
     {
@@ -34,10 +35,11 @@ class Users extends Controller{
             exit;
         }
     }
-    public function storeInsession($data){
+    public function storeInsession($data)
+    {
         session_start();
-        $_SESSION['id']= $data['user_id'];
-        $_SESSION['name']= $data['user_name'];
+        $_SESSION['id'] = $data['user_id'];
+        $_SESSION['name'] = $data['user_name'];
     }
     public function logIn()
     {
@@ -59,31 +61,48 @@ class Users extends Controller{
                     $this->view('pages/authordash');
                     break;
                 default:
-                redirect('index.php');
+                    redirect('index.php');
                     break;
             }
         }
     }
 
 
-    public function addTocat(){
+    public function addTocat()
+    {
         $catname = '';
-        $adminid = 0 ; 
-        $img= '';
-        if(isset($_POST['name'])&&$_POST['id']&&$_POST['img']){
+        $adminid = 0;
+        $img = '';
+        if (isset($_POST['name']) && $_POST['id'] && $_POST['img']) {
             $catname = $_POST['name'];
             $adminid = $_POST['id'];
-            $img =$_POST['img'];
+            $img = $_POST['img'];
         }
-        $this->userModel->addtocat($catname,$adminid,$img);
+        $this->userModel->addtocat($catname, $adminid, $img);
     }
-    public function displayCategories(){
+    public function displayCategories()
+    {
         $row  = $this->userModel->displaycategories();
-        if($row){
+        if ($row) {
             echo json_encode($row);
         }
     }
-    public function removecat(){
-        
+    public function removecat()
+    {
+        $cat_id = 0;
+        if (isset($_POST['cat_id'])) {
+            $cat_id = $_POST['cat_id'];
+        }
+        $this->userModel->removecat($cat_id);
+    }
+    public function updatecat()
+    {
+        $cat_name = '';
+        $cat_id = 0;
+        if (isset($_POST['name']) && $_POST['id']) {
+            $cat_name = $_POST['name'];
+            $cat_id = $_POST['id'];
+        }
+        $this->userModel->updatecat($cat_id, $cat_name);
     }
 }
