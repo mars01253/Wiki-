@@ -65,5 +65,31 @@ class User
         $this->db->bind(':id' ,$cat_id );
         $this->db->execute();
     }
-    
+    public function addtag($name){
+        $this->db->query('INSERT INTO tags(tag_name) Values(:name)');
+        $this->db->bind(':name' , $name);
+        $this->db->execute();
+    }
+    public function checktag($name){
+        $this->db->query('SELECT * FROM tags WHERE tag_name =:name');
+        $this->db->bind(':name' , $name);
+        $this->db->execute();
+        $count = $this->db->rowCount();
+        if($count>0){
+            return true;
+        }else{
+            return false ; 
+        }
+    }
+    public function displaytags(){
+        $this->db->query('SELECT * FROM tags');
+        $this->db->execute();
+        $data = $this->db->resultSet();
+        return $data ; 
+    }
+    public function deletetag($id){
+        $this->db->query('DELETE FROM tags WHERE tag_id = :id');
+        $this->db->bind(':id' , $id);
+        $this->db->execute();
+    }
 }

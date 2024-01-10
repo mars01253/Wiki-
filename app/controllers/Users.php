@@ -66,8 +66,6 @@ class Users extends Controller
             }
         }
     }
-
-
     public function addTocat()
     {
         $catname = '';
@@ -104,5 +102,43 @@ class Users extends Controller
             $cat_id = $_POST['id'];
         }
         $this->userModel->updatecat($cat_id, $cat_name);
+    }
+    public function addtag()
+    {
+
+        if (isset($_POST['tagname'])) {
+            $name = $_POST['tagname'];
+            $this->userModel->addtag($name);
+            $this->view('pages/admindash');
+        }
+        $this->view('pages/admindash');
+    }
+    public function checktag()
+    {
+        $name  = '';
+        if (isset($_POST['name'])) {
+            $name = $_POST['name'];
+            $result = $this->userModel->checktag($name);
+            if ($result) {
+                echo "Tag Already Exists!!!";
+            }
+        }
+    }
+    public function displaytags()
+    {
+        $data = $this->userModel->displaytags();
+        if ($data) {
+            echo json_encode($data);
+        }
+    }
+    public function deletetag()
+    {
+        $id = 0;
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
+
+            $id  = $_POST['id'];
+        }
+        $this->userModel->deletetag($id);
+        $this->view('pages/admindash');
     }
 }

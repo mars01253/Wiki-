@@ -11,7 +11,7 @@
     <title>MyWiki</title>
 </head>
 
-<body>
+<body class="bg-gray-900">
     <?php include_once('../app/views/inc/authornav.php'); ?>
     <div id="deletedcat" class="hidden bg-blue-50 border-b border-blue-400 text-blue-800 text-sm p-4 flex justify-between">
         <div>
@@ -32,7 +32,7 @@
         </div>
     </div>
     <h1 class="hidden" id="id"><?= $_SESSION['id']; ?></h1>
-    <div class="bg-gray-900 min-h-screen flex items-center justify-center">
+    <div class="bg-gray-900 min-h-[60vh] flex items-center justify-center">
         <div class="bg-gray-800 flex-1 flex flex-col space-y-5 lg:space-y-0 lg:flex-row lg:space-x-10 max-w-6xl sm:p-6 sm:my-2 sm:mx-4 sm:rounded-2xl">
             <div class="flex-1 px-2 sm:px-0">
                 <div class="flex justify-between items-center">
@@ -47,32 +47,52 @@
                         </a>
                         <button id="addcategory" class="text-white/50 group-hover:text-white group-hover:smooth-hover text-center">Add Cattegory</button>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="bg-gray-900 min-h-screen flex items-center justify-center">
-        <div class="bg-gray-800 flex-1 flex flex-col space-y-5 lg:space-y-0 lg:flex-row lg:space-x-10 max-w-6xl sm:p-6 sm:my-2 sm:mx-4 sm:rounded-2xl">
-            <div class="flex-1 px-2 sm:px-0">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-3xl font-extralight text-white/50">Tags</h3>
-                </div>
-                <div id="catdiv" class="mb-10 sm:mb-0 mt-10 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    <div class="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
-                        <a class="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </a>
-                        <button id="addcategory" class="text-white/50 group-hover:text-white group-hover:smooth-hover text-center">Add Tags</button>
-                    </div>
-
-                </div>
-            </div>
+    <div class="w-[100%] flex">
+        <div class="flex justify-between items-center ml-4">
+            <h3 class="text-3xl font-extralight mb-2 text-white/50"> Add tags</h3>
         </div>
     </div>
+
+    <form id="tgadd" action="<?php echo URLROOT; ?>Users/addtag" method="post">
+        <div class="w-[100%] flex">
+            <div class="w-[80%] ml-4 flex flex-row items-center gap-5 ">
+                <input id="tgname" type="text" name="tagname" class="block w-full px-4 py-2  text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring">
+                <button type="submit" class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Add</button>
+                
+            </div>
+        </div>
+        <div class="text-white ml-4" id="taganswer"></div> 
+    </form>
+    <div class="flex min-h-[60vh] items-center justify-center bg-gray-900">
+        <div class="w-[100%]">
+            <table class="w-full min-w-max table-auto text-left">
+                <thead>
+                    <tr>
+                        <th class="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
+                            <p class="block antialiased font-sans text-sm text-white font-normal leading-none opacity-70">Tag Name</p>
+                        </th>
+                        <th class="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
+                            <p class="block antialiased font-sans text-sm text-white font-normal leading-none opacity-70">Delete Tag</p>
+                        </th>
+                        <th class="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
+                            <p class="block antialiased font-sans text-sm text-white font-normal leading-none opacity-70">Edit tag</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tagshere">
+                    
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
 
     <div id="category" class="w-[50%] hidden rounded-xl fixed bottom-[25%] z-50 right-[25%] border border-white-500 p-6 bg-gray-900">
         <div class="w-[80%] mt-2 ml-4"><button id="closecat" class="float-right">
@@ -83,19 +103,6 @@
         <h2 class="text-2xl pb-3 text-white font-semibold">
             Add Category</h2>
         <div>
-            <div>
-                <label for="dropzone-file" class="flex flex-col items-center w-full max-w-lg p-5 mx-auto mt-2 text-center bg-white border-2 border-gray-300 border-dashed cursor-pointer dark:bg-gray-900 dark:border-gray-700 rounded-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500 dark:text-gray-400">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
-                    </svg>
-
-                    <h2 class="mt-1 font-medium tracking-wide text-gray-700 dark:text-gray-200">img </h2>
-
-                    <p class="mt-2 text-xs tracking-wide text-gray-500 dark:text-gray-400">Upload or darg & drop your file SVG, PNG, JPG or GIF. </p>
-
-                    <input id="dropzone-file" type="file" class="hidden" />
-                </label>
-            </div>
             <div class="flex flex-col  text-white mb-3">
                 <label for="name">Name</label>
                 <input type="text" id="catname" class="px-3 py-2 bg-gray-800 border border-gray-900 focus:border-white-500 focus:outline-none focus:bg-gray-800 focus:text-white-500" autocomplete="off">
