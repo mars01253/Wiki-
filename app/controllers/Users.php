@@ -70,13 +70,12 @@ class Users extends Controller
     {
         $catname = '';
         $adminid = 0;
-        $img = '';
-        if (isset($_POST['name']) && $_POST['id'] && $_POST['img']) {
+        if (isset($_POST['name']) && $_POST['id']) {
             $catname = $_POST['name'];
             $adminid = $_POST['id'];
-            $img = $_POST['img'];
+            
         }
-        $this->userModel->addtocat($catname, $adminid, $img);
+        $this->userModel->addtocat($catname, $adminid);
     }
     public function displayCategories()
     {
@@ -150,5 +149,12 @@ class Users extends Controller
         }
         $this->userModel->updatetag($name,$id);
         $this->view('pages/admindash');
+    }
+    public function logout()
+    {
+        session_start();
+        unset($_SESSION['id']);
+        session_destroy();
+        $this->view('pages/index');
     }
 }

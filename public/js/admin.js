@@ -39,18 +39,17 @@ function Categorymethods() {
         category.classList.add('hidden');
     })
 }
-
 const addtocat = document.getElementById('addtocat');
 const deletedcat = document.getElementById('deletedcat');
 addtocat.addEventListener('click', e => {
-    let id = parseInt(document.getElementById('id').innerText);
+    let id = document.getElementById('id').innerText;
     let catname = document.getElementById('catname').value;
-    let dropzone = document.getElementById('dropzone-file').value;
     let added = document.getElementById('added');
+    console.log(id);
+    console.log(catname);
     var formData = new FormData();
     formData.append('name', catname);
     formData.append('id', id);
-    formData.append('img', dropzone);
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost/Wiki-/Users/addTocat', true);
     xhr.onload = function () {
@@ -62,6 +61,7 @@ addtocat.addEventListener('click', e => {
     xhr.send(new URLSearchParams(formData));
 
 });
+
 function crudcat() {
     let cat_id = document.querySelectorAll(".catid");
     let updatecat = document.querySelectorAll(".updatecat");
@@ -203,7 +203,6 @@ function displaytags() {
             edittag.classList.add('hidden');
         })
     }
-    
     }
    
 }

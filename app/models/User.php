@@ -35,12 +35,11 @@ class User
         $data = $this->db->single();
         return $data;
     }
-    public function addtocat($catname, $adminid, $img)
+    public function addtocat($catname, $adminid)
     {
-        $this->db->query('INSERT INTO category(category_name , admin_id,category_img) VALUES(:catname , :adminid,:img)');
+        $this->db->query('INSERT INTO category(category_name , admin_id,category_img) VALUES(:catname , :adminid)');
         $this->db->bind(':catname', $catname);
         $this->db->bind(':adminid', $adminid);
-        $this->db->bind(':img', $img);
         $this->db->execute();
     }
 
