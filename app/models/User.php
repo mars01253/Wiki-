@@ -92,4 +92,10 @@ class User
         $this->db->bind(':id' , $id);
         $this->db->execute();
     }
+    public function updatetag($name , $id){
+        $this->db->query('UPDATE tags SET tag_name = :name WHERE tag_id = :id');
+        $this->db->bind(':name' , $name);
+        $this->db->bind(':id' , $id);
+        $this->db->execute();
+    }
 }

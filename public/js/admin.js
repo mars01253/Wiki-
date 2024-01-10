@@ -150,7 +150,8 @@ function prevent(e) {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send(new URLSearchParams(formData));
 }
-var data = {};
+var data_id = [];
+var data_name = [];
 function displaytags() {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost/Wiki-/Users/displaytags', true);
@@ -178,18 +179,35 @@ function displaytags() {
                         </td>
                     </tr>
                 `;
-                data['id'] = [element.tag_id];
-                data['tagname'] = [element.tag_name];
-
+                data_id.push(element.tag_id);
+                data_name.push(element.tag_name);
             });
+            updatetag();
         }
     };
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send();
-    const updatag = document.querySelectorAll('.updatag');
     
-
+    function updatetag(){
+        const updatag = document.querySelectorAll('.updatag');
+        const edittag = document.getElementById('edittag');
+        const closeedittag = document.getElementById('closeedittag');
+         for (let index = 0; index < updatag.length; index++) {
+        updatag[index].addEventListener("click" , e=>{
+            edittag.classList.remove('hidden');
+            document.getElementById('edittaginp').value=data_name[index];
+            document.getElementById('edittagid').value=data_id[index];
+        })
+        closeedittag.addEventListener("click" , e=>{
+            e.preventDefault();
+            edittag.classList.add('hidden');
+        })
+    }
+    
+    }
+   
 }
+
 
 
 

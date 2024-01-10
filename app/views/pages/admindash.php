@@ -141,6 +141,29 @@
         </div>
     </div>
 
+    <form method="post" action="<?php echo URLROOT; ?>Users/updatetag"  id="edittag" class="w-[50%] hidden rounded-xl fixed bottom-[25%] z-50 right-[25%] border border-white-500 p-6 bg-gray-900">
+        <div class="w-[80%] mt-2 ml-4"><button id="closeedittag" class="float-right">
+                <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 448 512">
+                    <path fill="#1f59e0" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm79 143c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z" />
+                </svg></button>
+        </div>
+        <h2 class="text-2xl pb-3 text-white font-semibold">
+            Edit Tag</h2>
+        <div>
+            <div class="flex flex-col  text-white mb-3">
+                <label for="name">Edit Name</label>
+                <input type="text" name="name" id="edittaginp" class="px-3 py-2 bg-gray-800 border border-gray-900 focus:border-white-500 focus:outline-none focus:bg-gray-800 focus:text-white-500" autocomplete="off">
+                <input type="text" name="id" id="edittagid" class="hidden px-3 py-2 bg-gray-800 border border-gray-900 focus:border-white-500 focus:outline-none focus:bg-gray-800 focus:text-white-500" autocomplete="off">
+            </div>
+        </div>
+        <span id="categoryadded"></span>
+        <div class="w-full text-white pt-3">
+            <button type="submit"  class="w-full bg-gray-900 border border-white-500 px-4 py-2 transition duration-50 focus:outline-none font-semibold hover:bg-white-500 hover:text-white text-xl cursor-pointer">
+                Edit
+            </button>
+        </div>
+    </form>
+
 </body>
 
 </html>

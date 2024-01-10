@@ -141,4 +141,14 @@ class Users extends Controller
         $this->userModel->deletetag($id);
         $this->view('pages/admindash');
     }
+    public function updatetag(){
+        $id = 0 ;
+        $name = '';
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])&&isset($_POST['name'])) {
+            $id  = $_POST['id'];
+            $name = $_POST['name'] ;
+        }
+        $this->userModel->updatetag($name,$id);
+        $this->view('pages/admindash');
+    }
 }
