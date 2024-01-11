@@ -1,9 +1,9 @@
-const signbtn = document.getElementById('signbtn');
-const registerbtn = document.getElementById('registerbtn');
-const signupdiv = document.getElementById('signupdiv');
-const signindiv = document.getElementById('signindiv');
-const closesignin = document.getElementById('closesignin');
-const closesignup = document.getElementById('closesignup');
+const signbtn = document.getElementById('signbtn')
+const registerbtn = document.getElementById('registerbtn')
+const signupdiv = document.getElementById('signupdiv')
+const signindiv = document.getElementById('signindiv')
+const closesignin = document.getElementById('closesignin')
+const closesignup = document.getElementById('closesignup')
 
 signbtn.addEventListener('click', e => {
     signindiv.classList.remove('hidden');
