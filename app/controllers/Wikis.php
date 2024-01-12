@@ -21,8 +21,14 @@ class Wikis extends Controller
             $author = $_POST['authorid'];
             $category = $_POST['category'];
         }
-        $data = $this->wikiModel->insertwiki($title,$desc,$img,$author,$category);
-        echo $data;
+        $wikiid = $this->wikiModel->insertwiki($title,$desc,$img,$author,$category);
+        if($_POST['tagid']){
+            $arrayofID = json_decode($_POST['tagid']);
+            $tagid = $arrayofID ;
+            for ($i=0; $i <count($tagid) ; $i++) { 
+                $this->wikiModel->inserttag($wikiid ,$tagid[$i][0]);
+            }
+        }
     }
     public function display($id){
         $data = $this->wikiModel->display($id);

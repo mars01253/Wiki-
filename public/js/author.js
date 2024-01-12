@@ -1,4 +1,6 @@
 var selectcat = document.getElementById('selectcat');
+const addwiki = document.getElementById('addwiki');
+
 const opentagdiv = document.getElementById('opentagdiv');
 const tagspop = document.getElementById('tagspop');
 const closetagdiv = document.getElementById('closetagdiv');
@@ -67,6 +69,7 @@ function tagsoperations() {
                         <input class="hidden tagids" value="${id}">
                        `
                 }
+              
             })
         }
 
@@ -85,46 +88,6 @@ function tagsoperations() {
 }
 
 
-const addwiki = document.getElementById('addwiki');
 
-addwiki.addEventListener('click', wiki);
-function wiki() {
-    let title = document.getElementById('wikititle').value;
-    let desc = document.getElementById('wikiarticle').value;
-    let img = document.getElementById('file-upload').value;
-    let category = document.getElementById('selectcat').value;
-    let authorid = document.getElementById('authorid').innerText;
 
-    var formData = new FormData();
-    formData.append('title', title);
-    formData.append('desc', desc);
-    formData.append('img', img);
-    formData.append('category', category);
-    formData.append('authorid', authorid);
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost/Wiki-/Wikis/insertwiki', true);
-    xhr.onload = function () {
-        if (xhr.status == 200 && xhr.readyState == 4) {
-            document.getElementById("idhere").value = xhr.response;
-        }
-    };
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(new URLSearchParams(formData));
 
-}
-confirmbtn.addEventListener('click', confirm);
-function confirm() {
-    console.log('hzzlo');
-    const tagids = document.querySelectorAll(".tagids").value;
-    let dataID = [];
-    console.log("test",tagids);
-    // if(tagids.length > 0) {
-
-    //     for (let index = 0; index < tagids.length; index++) {
-    //         dataID.push(tagids);
-    //     }
-    // }
-
-}
-
-/************************************************************** */

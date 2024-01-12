@@ -17,7 +17,8 @@ class Wiki
         return $this->db->lastInsertId();
     }
     public function display($id){
-        $this->db->query('SELECT * FROM wikis WHERE wiki_author = :id');
+        $this->db->query('SELECT * FROM wikis inner join users on wikis.wiki_author = users.user_id inner join category
+        on wikis.wiki_category = category.category_id WHERE wiki_author = :id');
         $this->db->bind(':id' , $id);
         $this->db->execute();
         $data = $this->db->resultSet();
@@ -28,6 +29,12 @@ class Wiki
     public function deletewiki($id){
         $this->db->query('DELETE FROM wikis WHERE wiki_id =:id');
         $this->db->bind(':id' , $id);
+        $this->db->execute();
+    }
+    public function inserttag($wikiid,$tagid){
+        $this->db->query('INSERT INTO wiki_tags VALUES(:wikiid , :tag_id)');
+        $this->db->bind('wikiid', $wikiid);
+        $this->db->bind('tag_id', $tagid);
         $this->db->execute();
     }
 }
