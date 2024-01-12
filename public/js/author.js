@@ -2,6 +2,8 @@ var selectcat = document.getElementById('selectcat');
 const opentagdiv = document.getElementById('opentagdiv');
 const tagspop = document.getElementById('tagspop');
 const closetagdiv = document.getElementById('closetagdiv');
+let confirmbtn = document.getElementById('confirmbtn');
+
 const xhr = new XMLHttpRequest();
 xhr.open('POST', 'http://localhost/Wiki-/Categories/displayoptions', true);
 xhr.onload = function () {
@@ -22,9 +24,11 @@ xhr.send();
 function tagsoperations() {
     opentagdiv.addEventListener('click', e => {
         tagspop.classList.remove('hidden');
+        confirmbtn.classList.remove('hidden');
     })
     closetagdiv.addEventListener('click', e => {
         tagspop.classList.add('hidden');
+        confirmbtn.classList.add('hidden');
     })
     var tagid = [];
     var tagname = [];
@@ -38,12 +42,89 @@ function tagsoperations() {
                 output.innerHTML += `
            <button class="p-4 bg-blue-200 ml-2 mb-2 rounded-xl tagsbtn" value="${data[index][0]}">${data[index][1]}</button>
            `;
-           tagid.push(data[index][0]);
-           tagname.push(data[index][1]);
+                tagid.push(data[index][0]);
+                tagname.push(data[index][1]);
+
             }
         }
+        tagbtn();
+
     };
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send();
-    
+    function tagbtn() {
+        const tagsbtn = document.querySelectorAll(".tagsbtn");
+        for (let index = 0; index < tagsbtn.length; index++) {
+            tagsbtn[index].addEventListener('click', e => {
+                let tagshere2 = document.getElementById('tagshere2');
+                let name = tagname[index];
+                let id = tagid[index];
+
+                let check = checktag(id);
+                if (!check) {
+                    tagshere2.innerHTML += `
+                        <button class="p-4 bg-blue-200 ml-2 mb-2 rounded-xl tagbtn" value="${id}">${name}</button>
+                        <input class="hidden tagids" value="${id}">
+                       `
+                }
+            })
+        }
+
+    }
+    function checktag(id) {
+        const tagbtns = document.querySelectorAll('.tagbtn');
+        for (let index = 0; index < tagbtns.length; index++) {
+            let tagId = tagbtns[index].value;
+            if (id == tagId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
+
+
+const addwiki = document.getElementById('addwiki');
+
+addwiki.addEventListener('click', wiki);
+function wiki() {
+    let title = document.getElementById('wikititle').value;
+    let desc = document.getElementById('wikiarticle').value;
+    let img = document.getElementById('file-upload').value;
+    let category = document.getElementById('selectcat').value;
+    let authorid = document.getElementById('authorid').innerText;
+
+    var formData = new FormData();
+    formData.append('title', title);
+    formData.append('desc', desc);
+    formData.append('img', img);
+    formData.append('category', category);
+    formData.append('authorid', authorid);
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost/Wiki-/Wikis/insertwiki', true);
+    xhr.onload = function () {
+        if (xhr.status == 200 && xhr.readyState == 4) {
+            document.getElementById("idhere").value = xhr.response;
+        }
+    };
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(new URLSearchParams(formData));
+
+}
+confirmbtn.addEventListener('click', confirm);
+function confirm() {
+    console.log('hzzlo');
+    const tagids = document.querySelectorAll(".tagids").value;
+    let dataID = [];
+    console.log("test",tagids);
+    // if(tagids.length > 0) {
+
+    //     for (let index = 0; index < tagids.length; index++) {
+    //         dataID.push(tagids);
+    //     }
+    // }
+
+}
+
+/************************************************************** */
