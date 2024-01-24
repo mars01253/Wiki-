@@ -38,4 +38,53 @@ class Wikis extends Controller
         $id = $_POST['id'];
         $this->wikiModel->deletewiki($id);
     }
+    public function updatewiki(){
+        $title = $_POST['name'];
+        $desc = $_POST['article'];
+        $img = !empty($_POST['imagehere'])? $_POST['imagehere']:$_POST['img'];
+        $id = $_POST['id'];
+        $_SESSION['id']= $_POST['userid'];
+        $this->wikiModel->updatewiki($title,$desc,$img, $id);
+        $this->view('pages/authordash');
+       
+    }
+    public function displaywikitags(){
+        $id = $_POST['id'];
+        $data = $this->wikiModel->displaywikitags($id);
+        echo json_encode($data);
+    }
+    public function displayallwiki(){
+        $data = $this->wikiModel->displayallwiki();
+        return $data ; 
+    }
+    public function displayallwikiadmin(){
+        $data = $this->wikiModel->displayallwikiadmin();
+        return $data ; 
+    }
+    public function archivewiki(){
+        $id = 0 ; 
+        if(isset($_POST['id'])){
+            $id = $_POST['id'] ; 
+            $this->wikiModel->archivewiki($id);
+            $this->view('pages/admindash');
+        }
+    }
+    public function totalwikis(){
+        $count = $this->wikiModel->totalwikis();
+        return $count ; 
+    }
+    public function totalauthors(){
+        $count = $this->wikiModel->totalauthors();
+        return $count ; 
+    }
+    public function activeuser(){
+        $count = $this->wikiModel->activeuser();
+        return $count ; 
+    }
+    public function displaysinglewiki(){
+        $id = $_GET['id'];
+        $this->view('pages/singlepage');
+        return $this->wikiModel->displaysinglewiki($id);
+    }
+    
 }

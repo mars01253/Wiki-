@@ -45,19 +45,27 @@ class Users extends Controller
     {
         $email = '';
         $pass =  '';
+        $emailtocompare = '';
+        $passtocompare = '';
         if (isset($_POST['email'])) {
             $email  = $_POST['email'];
             $pass  = $_POST['pass'];
         }
         $data = $this->userModel->login($email);
-        if ($email == $data['user_email'] && password_verify($pass, $data['user_password'])) {
+        if (isset($data['user_email']) && isset($data['user_password'])) {
+            $emailtocompare = $data['user_email'];
+            $passtocompare = $data['user_password'];
+        }
+        if ($email == $emailtocompare && password_verify($pass, $passtocompare)) {
             $this->storeInsession($data);
             $role = $data['user_role'];
             switch ($role) {
                 case 'ADMIN':
+                    $_SESSION['role'] = $role;
                     $this->view('pages/admindash');
                     break;
                 case 'AUTHOR':
+                    $_SESSION['role'] = $role;
                     $this->view('pages/authordash');
                     break;
                 default:
@@ -65,17 +73,9 @@ class Users extends Controller
                     break;
             }
         }
-    }
-    public function addTocat()
-    {
-        $catname = '';
-        $adminid = 0;
-        if (isset($_POST['name']) && $_POST['id']) {
-            $catname = $_POST['name'];
-            $adminid = $_POST['id'];
-            
+        if (!isLogedin()) {
+            redirect('pages/index');
         }
-        $this->userModel->addtocat($catname, $adminid);
     }
     public function displayCategories()
     {
@@ -140,21 +140,31 @@ class Users extends Controller
         $this->userModel->deletetag($id);
         $this->view('pages/admindash');
     }
-    public function updatetag(){
-        $id = 0 ;
+    public function updatetag()
+    {
+        $id = 0;
         $name = '';
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])&&isset($_POST['name'])) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id']) && isset($_POST['name'])) {
             $id  = $_POST['id'];
-            $name = $_POST['name'] ;
+            $name = $_POST['name'];
         }
-        $this->userModel->updatetag($name,$id);
+        $this->userModel->updatetag($name, $id);
         $this->view('pages/admindash');
     }
     public function logout()
     {
         session_start();
         unset($_SESSION['id']);
+        unset($_SESSION['name']);
+        unset($_SESSION['role']);
         session_destroy();
         $this->view('pages/index');
+    }
+
+    public function search()
+    {
+        $search = $_POST['search'];
+        $data = $this->userModel->search($search);
+        echo json_encode($data);
     }
 }

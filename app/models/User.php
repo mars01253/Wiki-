@@ -35,13 +35,7 @@ class User
         $data = $this->db->single();
         return $data;
     }
-    public function addtocat($catname, $adminid)
-    {
-        $this->db->query('INSERT INTO category(category_name , admin_id,category_img) VALUES(:catname , :adminid)');
-        $this->db->bind(':catname', $catname);
-        $this->db->bind(':adminid', $adminid);
-        $this->db->execute();
-    }
+    
 
     public function displaycategories()
     {
@@ -60,41 +54,66 @@ class User
     public function updatecat($cat_id, $cat_name)
     {
         $this->db->query('UPDATE category SET category_name= :name  WHERE category_id =:id');
-        $this->db->bind(':name' ,$cat_name );
-        $this->db->bind(':id' ,$cat_id );
+        $this->db->bind(':name', $cat_name);
+        $this->db->bind(':id', $cat_id);
         $this->db->execute();
     }
-    public function addtag($name){
+    public function addtag($name)
+    {
         $this->db->query('INSERT INTO tags(tag_name) Values(:name)');
-        $this->db->bind(':name' , $name);
+        $this->db->bind(':name', $name);
         $this->db->execute();
     }
-    public function checktag($name){
+    public function checktag($name)
+    {
         $this->db->query('SELECT * FROM tags WHERE tag_name =:name');
-        $this->db->bind(':name' , $name);
+        $this->db->bind(':name', $name);
         $this->db->execute();
         $count = $this->db->rowCount();
-        if($count>0){
+        if ($count > 0) {
             return true;
-        }else{
-            return false ; 
+        } else {
+            return false;
         }
     }
-    public function displaytags(){
+    public function displaytags()
+    {
         $this->db->query('SELECT * FROM tags');
         $this->db->execute();
         $data = $this->db->resultSet();
-        return $data ; 
+        return $data;
     }
-    public function deletetag($id){
+    public function deletetag($id)
+    {
         $this->db->query('DELETE FROM tags WHERE tag_id = :id');
-        $this->db->bind(':id' , $id);
+        $this->db->bind(':id', $id);
         $this->db->execute();
     }
-    public function updatetag($name , $id){
+    public function updatetag($name, $id)
+    {
         $this->db->query('UPDATE tags SET tag_name = :name WHERE tag_id = :id');
-        $this->db->bind(':name' , $name);
-        $this->db->bind(':id' , $id);
+        $this->db->bind(':name', $name);
+        $this->db->bind(':id', $id);
         $this->db->execute();
     }
+
+    public function search($search)
+    {
+
+        $searchparam = filter_var($search , FILTER_SANITIZE_SPECIAL_CHARS);
+        $query = "SELECT wikis.*, category.category_name AS category, GROUP_CONCAT(tags.tag_name) AS tags
+            FROM wikis
+            LEFT JOIN category ON wikis.wiki_category = category.category_id
+            LEFT JOIN wiki_tags ON wikis.wiki_id = wiki_tags.wiki_id
+            LEFT JOIN tags ON wiki_tags.tag_id = tags.tag_id
+            WHERE (wikis.wiki_title LIKE :search OR category.category_name LIKE :search OR tags.tag_name LIKE :search)
+            AND wikis.archive = 0";
+        $query .= " GROUP BY wikis.wiki_id";
+
+        $this->db->query($query);
+        $this->db->bind(':search', "%$searchparam%");
+
+        return $this->db->resultSet();
+    }
+
 }

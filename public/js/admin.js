@@ -45,15 +45,13 @@ addtocat.addEventListener('click', e => {
     let id = document.getElementById('id').innerText;
     let catname = document.getElementById('catname').value;
     let added = document.getElementById('added');
-    console.log(id);
-    console.log(catname);
     var formData = new FormData();
     formData.append('name', catname);
     formData.append('id', id);
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost/Wiki-/Users/addTocat', true);
+    xhr.open('POST', 'http://localhost/Wiki-/Categories/addTocat', true);
     xhr.onload = function () {
-        if (xhr.status == 200 && xhr.readyState == 4) {
+        if (xhr.status == 200 && xhr.readyState == 4 && catname.value != '') {
             added.innerHTML = 'Category added Succesfully';
         }
     };

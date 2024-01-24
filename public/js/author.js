@@ -34,6 +34,7 @@ function tagsoperations() {
     })
     var tagid = [];
     var tagname = [];
+    let edittagshere = document.getElementById('edittagshere');
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost/Wiki-/Tags/displayTags', true);
     xhr.onload = function () {
@@ -44,6 +45,8 @@ function tagsoperations() {
                 output.innerHTML += `
            <button class="p-4 bg-blue-200 ml-2 mb-2 rounded-xl tagsbtn" value="${data[index][0]}">${data[index][1]}</button>
            `;
+                
+
                 tagid.push(data[index][0]);
                 tagname.push(data[index][1]);
 
